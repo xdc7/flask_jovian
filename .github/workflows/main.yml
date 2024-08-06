@@ -56,7 +56,19 @@ jobs:
     #     echo $VERCEL_PROJECT_ID
     #     vercel --token $VERCEL_TOKEN --prod
 
-    - name: Deploy to Vercel
+    # - name: Deploy to Vercel
+    #   run: vercel --token $VERCEL_TOKEN --prod
+    #   env:
+    #     VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    - name: Deploy to Vercel (Production)
+      if: github.ref == 'refs/heads/main'
       run: vercel --token $VERCEL_TOKEN --prod
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    - name: Deploy to Vercel (Preview)
+      if: github.ref != 'refs/heads/main'
+      run: vercel --token $VERCEL_TOKEN
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
